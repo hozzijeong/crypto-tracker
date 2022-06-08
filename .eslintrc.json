@@ -10,7 +10,6 @@
         "plugin:@typescript-eslint/recommended",
         "airbnb",
         "airbnb/hooks",
-        "airbnb-base",
         "prettier",
         "airbnb-typescript/base"
     ],
@@ -20,13 +19,16 @@
             "jsx": true
         },
         "ecmaVersion": "latest",
-        "sourceType": "module"
+        "sourceType": "module",
+        "project": ["./tsconfig.json"]
     },
     "plugins": ["react", "@typescript-eslint"],
     "rules": {
         "linebreak-style": 0,
         "react/jsx-filename-extension": [1, { "extensions": [".js", ".jsx",".ts",".tsx"] }],
         "react/react-in-jsx-scope": "off",
+        "indent": "off",
+        "@typescript-eslint/indent": ["error","tab"],
         "import/extensions": [
             "error",
             "ignorePackages",
