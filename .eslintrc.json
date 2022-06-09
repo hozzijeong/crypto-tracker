@@ -8,6 +8,7 @@
         "eslint:recommended",
         "plugin:react/recommended",
         "plugin:@typescript-eslint/recommended",
+        "plugin:@typescript-eslint/eslint-recommended",
         "airbnb",
         "airbnb/hooks",
         "prettier",
@@ -29,6 +30,8 @@
         "react/react-in-jsx-scope": "off",
         "indent": "off",
         "@typescript-eslint/indent": ["error","tab"],
+        "no-unused-vars": "off",
+        "@typescript-eslint/no-unused-vars": ["error"],
         "import/extensions": [
             "error",
             "ignorePackages",
