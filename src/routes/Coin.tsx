@@ -7,7 +7,7 @@ type RouteParams = {
 
 function Coin() {
 	const { coinId } = useParams<RouteParams>();
-
+	console.log(coinId);
 	return <h1>{coinId}</h1>;
 }
 export default Coin;
