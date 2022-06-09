@@ -57,6 +57,7 @@ interface CoinInterface {
 function Coins() {
 	const [coins, setCoins] = useState<CoinInterface[]>([]);
 	const [loading, setLoading] = useState(true);
+
 	const getData = async (url: string): Promise<any> => {
 		const response = await fetch(url);
 		const data = await response.json();
