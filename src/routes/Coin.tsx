@@ -1,8 +1,8 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
-import { useState } from 'react';
-import { useLocation, useParams } from 'react-router';
 import styled from 'styled-components';
-// import styled from 'styled-components';
+import { useEffect, useState } from 'react';
+import { useLocation, useParams } from 'react-router';
+import { getData } from '../utility/data';
 
 const Title = styled.h1`
 	font-size: 48px;
@@ -37,11 +37,27 @@ interface LocationParams {
 		rank?: number;
 	};
 }
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
+
+// interface CoinInfo {
+
+// }
+
 function Coin() {
 	const [loading, setLoading] = useState(true);
 	const { coinId } = useParams<keyof RouteParams>() as RouteParams;
 	const { state } = useLocation() as LocationParams;
+	const [price, setPrice] = useState({});
+	const [info, setInfo] = useState({});
+	useEffect(() => {
+		getData(`https://api.coinpaprika.com/v1/coins/${coinId}`)
+			.then((res) => setInfo(res))
+			.catch((e) => alert(e));
+		getData(`https://api.coinpaprika.com/v1/tickers/${coinId}`)
+			.then((res) => setPrice(res))
+			.catch((e) => alert(e));
+		// eslint-disable-next-line react-hooks/exhaustive-deps
+	}, []);
+
 	return (
 		<Container>
 			<Header>

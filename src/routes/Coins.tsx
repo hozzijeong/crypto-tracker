@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import styled from 'styled-components';
+import { getData } from '../utility/data';
 
 const Container = styled.div`
 	padding: 0 20;
@@ -64,13 +65,6 @@ interface CoinInterface {
 function Coins() {
 	const [coins, setCoins] = useState<CoinInterface[]>([]);
 	const [loading, setLoading] = useState(true);
-
-	const getData = async (url: string): Promise<any> => {
-		const response = await fetch(url);
-		const data = await response.json();
-
-		return data;
-	};
 
 	const getImageSrc = (symbol: string): string => `https://coinicons-api.vercel.app/api/icon/${symbol.toLowerCase()}`;
 

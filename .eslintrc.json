@@ -26,11 +26,11 @@
     "plugins": ["react", "@typescript-eslint"],
     "rules": {
         "linebreak-style": 0,
-        "react/jsx-filename-extension": [1, { "extensions": [".js", ".jsx",".ts",".tsx"] }],
-        "react/react-in-jsx-scope": "off",
-        "indent": "off",
+        "react/jsx-filename-extension": [1, { "extensions": [".js", ".jsx",".ts",".tsx"] }], // 확장 파일명 추가
+        "react/react-in-jsx-scope": "off", // return 할 때 jsx사용되는 것 차단
+        "indent": "off", // 들여쓰기 차단
         "@typescript-eslint/indent": ["error","tab"],
-        "no-unused-vars": "off",
+        "no-unused-vars": "off", // 사용하지 않는 변수 사용 차단
         "@typescript-eslint/no-unused-vars": ["error"],
         "import/extensions": [
             "error",
@@ -41,7 +41,8 @@
               "ts": "never",
               "tsx": "never"
             }
-         ]
+         ],
+         "import/prefer-default-export": "off" // export default 옵션 차단
     },
     "settings": {
         "import/resolver": {
