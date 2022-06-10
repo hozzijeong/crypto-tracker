@@ -1,7 +1,9 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
 import { useEffect, useState } from 'react';
+import { useQuery } from 'react-query';
 import { Link } from 'react-router-dom';
 import styled from 'styled-components';
-import { getData } from '../utility/data';
+import { getData } from '../api/api';
 
 const Container = styled.div`
 	padding: 0 20;
@@ -63,32 +65,20 @@ interface CoinInterface {
 	type: string;
 }
 function Coins() {
-	const [coins, setCoins] = useState<CoinInterface[]>([]);
-	const [loading, setLoading] = useState(true);
-
 	const getImageSrc = (symbol: string): string => `https://coinicons-api.vercel.app/api/icon/${symbol.toLowerCase()}`;
-
-	useEffect(() => {
-		getData('https://api.coinpaprika.com/v1/coins')
-			.then((res) => {
-				setCoins([...res].slice(0, 100));
-				setLoading(false);
-			})
-			.catch((e) => {
-				if (e === 'rejected') alert('거부되었습니다.');
-			});
-	}, []);
+	const URL = 'https://api.coinpaprika.com/v1/coins';
+	const { isLoading, data, isSuccess } = useQuery<CoinInterface[]>(['allCoins', URL], () => getData(URL));
 
 	return (
 		<Container>
 			<Header>
 				<Title>COINS</Title>
 			</Header>
-			{loading ? (
+			{isLoading ? (
 				<Loader>Loading</Loader>
-			) : (
+			) : isSuccess ? (
 				<CoinList>
-					{coins.map((coin) => (
+					{data?.slice(0, 100).map((coin) => (
 						<Coin key={coin.id}>
 							<Link to={`/${coin.id}`} state={{ name: coin.name }}>
 								<Image src={getImageSrc(coin.symbol)} />
@@ -97,7 +87,7 @@ function Coins() {
 						</Coin>
 					))}
 				</CoinList>
-			)}
+			) : null}
 		</Container>
 	);
 }

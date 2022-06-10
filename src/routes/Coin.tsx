@@ -1,8 +1,10 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
 import styled from 'styled-components';
+import { Link } from 'react-router-dom';
 import { useEffect, useState } from 'react';
-import { useLocation, useParams, Outlet } from 'react-router';
-import { getData } from '../utility/data';
+import { useLocation, useParams, Outlet, useMatch } from 'react-router';
+import { useQuery } from 'react-query';
+import { getData } from '../api/api';
 
 const Title = styled.h1`
 	font-size: 48px;
@@ -47,6 +49,27 @@ const OverviewItem = styled.div`
 `;
 const Description = styled.p`
 	margin: 20px 0px;
+`;
+
+const Tabs = styled.div`
+	display: grid;
+	grid-template-columns: repeat(2, 1fr);
+	margin: 25px 0px;
+	gap: 10px;
+`;
+
+const Tab = styled.span<{ isActive: boolean }>`
+	text-align: center;
+	text-transform: uppercase;
+	font-size: 12px;
+	font-weight: 400;
+	background-color: rgba(0, 0, 0, 0.5);
+	padding: 7px 0px;
+	border-radius: 10px;
+	color: ${(props) => (props.isActive ? props.theme.accentColor : props.theme.textColor)};
+	a {
+		display: block;
+	}
 `;
 
 interface RouteParams {
@@ -116,62 +139,70 @@ interface InfoData {
 }
 
 function Coin() {
-	const [loading, setLoading] = useState(true);
 	const { coinId } = useParams<keyof RouteParams>() as RouteParams;
 	const { state } = useLocation() as LocationParams;
-	const [price, setPrice] = useState<PriceData>();
-	const [info, setInfo] = useState<InfoData>();
-	useEffect(() => {
-		try {
-			getData(`https://api.coinpaprika.com/v1/coins/${coinId}`)
-				.then((res) => setInfo(res))
-				.catch((e) => alert(e));
-			getData(`https://api.coinpaprika.com/v1/tickers/${coinId}`)
-				.then((res) => setPrice(res))
-				.catch((e) => alert(e));
-			setLoading(false);
-		} catch (e) {
-			console.log(e); // 에러 발생
-		}
-	}, [coinId]);
+	const priceMatch = useMatch('/:coinId/price');
+	const chartMatch = useMatch('/:coinId/chart');
 
+	const {
+		isLoading: infoLoading,
+		data: infoData,
+		isSuccess: infoSuccess,
+	} = useQuery<InfoData>('coinInfo', () => getData(`https://api.coinpaprika.com/v1/coins/${coinId}`));
+	const {
+		isLoading: priceLoading,
+		data: priceData,
+		isSuccess: priceSuccess,
+	} = useQuery<PriceData>('coinInfo', () => getData(`https://api.coinpaprika.com/v1/tickers/${coinId}`));
+
+	const loading = infoLoading || priceLoading;
+	const success = infoSuccess || priceSuccess;
 	return (
 		<Container>
 			<Header>
-				<Title> {state?.name ? state.name : loading ? 'Loading...' : info?.name}</Title>
+				<Title> {state?.name ? state.name : loading ? 'Loading...' : infoData?.name}</Title>
 			</Header>
 			{loading ? (
 				<Loader>Loading...</Loader>
-			) : (
+			) : success ? (
 				<>
 					<Overview>
 						<OverviewItem>
 							<span>Rank:</span>
-							<span>{info?.rank}</span>
+							<span>{infoData?.rank}</span>
 						</OverviewItem>
 						<OverviewItem>
 							<span>Symbol:</span>
-							<span>${info?.symbol}</span>
+							<span>${infoData?.symbol}</span>
 						</OverviewItem>
 						<OverviewItem>
 							<span>Open Source:</span>
-							<span>{info?.open_source ? 'Yes' : 'No'}</span>
+							<span>{infoData?.open_source ? 'Yes' : 'No'}</span>
 						</OverviewItem>
 					</Overview>
-					<Description>{info?.description}</Description>
+					<Description>{infoData?.description}</Description>
 					<Overview>
 						<OverviewItem>
 							<span>Total Suply:</span>
-							<span>{price?.total_supply}</span>
+							<span>{priceData?.total_supply}</span>
 						</OverviewItem>
 						<OverviewItem>
 							<span>Max Supply:</span>
-							<span>{price?.max_supply}</span>
+							<span>{priceData?.max_supply}</span>
 						</OverviewItem>
 					</Overview>
+
+					<Tabs>
+						<Tab isActive={priceMatch !== null}>
+							<Link to={`/${coinId}/price`}>Price</Link>
+						</Tab>
+						<Tab isActive={chartMatch !== null}>
+							<Link to={`/${coinId}/chart`}>Chart</Link>
+						</Tab>
+					</Tabs>
 					<Outlet />
 				</>
-			)}
+			) : null}
 		</Container>
 	);
 }
