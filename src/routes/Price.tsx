@@ -31,7 +31,7 @@ function Price() {
 					toolbar: {
 						show: false,
 					},
-					background: 'transparent',
+					background: darkmode ? '#00000080' : '#e4e5f180',
 				},
 				grid: { show: false },
 				stroke: {
@@ -51,7 +51,7 @@ function Price() {
 					text: `The Percent Change of ${data?.name}`,
 					style: {
 						fontWeight: 'bold',
-						color: darkmode ? '#f5f6fa' : '#000000',
+						color: darkmode ? '#fafafa' : '#2f3640',
 					},
 				},
 			}}

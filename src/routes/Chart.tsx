@@ -34,10 +34,10 @@ function Chart() {
 					type="candlestick"
 					series={[
 						{
-							data: [
-								[1538856000000, [6593.34, 6600, 6582.63, 6600]],
-								[1538856900000, [6595.16, 6604.76, 6590.73, 6593.86]],
-							],
+							data: data?.map((x) => [
+								new Date(x.close).getTime() as number,
+								[x.open, x.high, x.low, x.close].map((k) => parseInt(k.toFixed(2), 10)) as number[],
+							]) as any,
 						},
 					]}
 					options={{

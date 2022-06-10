@@ -11,7 +11,7 @@ const Container = styled.div`
 	display: flex;
 	width: 100%;
 	height: 5vh;
-	border-bottom: 1px solid ${(props) => props.theme.accentColor};
+	border-bottom: 3px solid ${(props) => props.theme.tabBgColor};
 `;
 
 const Button = styled.button`
