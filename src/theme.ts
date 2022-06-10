@@ -5,12 +5,12 @@ export const darkTheme: DefaultTheme = {
 	bgColor: '#2f3640',
 	textColor: '#f5f6fa',
 	accentColor: '#9c88ff',
-	reverseBgColor: '#ffffff',
+	reverseBgColor: '#fafafa',
 };
 
 export const lightTheme: DefaultTheme = {
-	bgColor: '#ffffff',
+	bgColor: '#fafafa',
 	textColor: '#000000',
-	accentColor: '#556DD4',
+	accentColor: '#484b6a',
 	reverseBgColor: '#2f3640',
 };

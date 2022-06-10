@@ -70,7 +70,7 @@ const GlobalStyle = createGlobalStyle`
 function App() {
 	// eslint-disable-next-line @typescript-eslint/no-unused-vars
 	const darkmode = useRecoilValue(darkMode);
-	console.log(darkmode);
+
 	return (
 		<ThemeProvider theme={darkmode ? darkTheme : lightTheme}>
 			<>

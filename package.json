@@ -35,7 +35,9 @@
         "eject": "react-scripts eject",
         "lint": "eslint './src/**/*.{ts,tsx,js,jsx}'",
         "lint:fix": "eslint --fix './src/**/*.{ts,tsx,js,jsx}'",
-        "prettier": "prettier --write --config ./.prettierrc './src/**/*.{ts,tsx}'"
+        "prettier": "prettier --write --config ./.prettierrc './src/**/*.{ts,tsx}'",
+        "deploy": "gh-pages -d build",
+        "predeploy": "npm run build"
     },
     "eslintConfig": {
         "extends": [
@@ -72,5 +74,7 @@
         "eslint-plugin-react": "^7.28.0",
         "eslint-plugin-react-hooks": "^4.3.0",
         "prettier": "2.6.2"
-    }
+    },
+
+    "hompage": "https://hozzijeong.github.io/crypto-tracker"
 }

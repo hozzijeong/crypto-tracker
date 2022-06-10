@@ -1,7 +1,9 @@
 import { useQuery } from 'react-query';
 import { useOutletContext } from 'react-router-dom';
 import ApexChart from 'react-apexcharts';
+import { useRecoilValue } from 'recoil';
 import { fetchCoinHistory } from '../api/api';
+import { darkMode } from '../recoil';
 
 interface ChartProps {
 	coinId: string;
@@ -21,6 +23,7 @@ interface IHistorical {
 function Chart() {
 	const { coinId } = useOutletContext<ChartProps>();
 	const { isLoading, data } = useQuery<IHistorical[]>(['ohlcv', coinId], () => fetchCoinHistory(coinId));
+	const darkmode = useRecoilValue(darkMode);
 
 	return (
 		<div>
@@ -28,16 +31,18 @@ function Chart() {
 				'Loading chart...'
 			) : (
 				<ApexChart
-					type="line"
+					type="candlestick"
 					series={[
 						{
-							name: 'Price',
-							data: data?.map((price) => price.close) as number[],
+							data: [
+								[1538856000000, [6593.34, 6600, 6582.63, 6600]],
+								[1538856900000, [6595.16, 6604.76, 6590.73, 6593.86]],
+							],
 						},
 					]}
 					options={{
 						theme: {
-							mode: 'dark',
+							mode: darkmode ? 'dark' : 'light',
 						},
 						chart: {
 							height: 300,
@@ -45,7 +50,6 @@ function Chart() {
 							toolbar: {
 								show: false,
 							},
-							background: 'transparent',
 						},
 						grid: { show: false },
 						stroke: {
@@ -62,10 +66,7 @@ function Chart() {
 							type: 'datetime',
 							categories: data?.map((price) => price.time_close),
 						},
-						fill: {
-							type: 'gradient',
-							gradient: { gradientToColors: ['#0be881'], stops: [0, 100] },
-						},
+
 						colors: ['#0fbcf9'],
 						tooltip: {
 							y: {
