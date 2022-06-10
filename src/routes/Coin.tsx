@@ -2,7 +2,7 @@
 import styled from 'styled-components';
 import { Link } from 'react-router-dom';
 import { Helmet } from 'react-helmet-async';
-import { useLocation, useParams, Outlet, useMatch, useNavigate } from 'react-router';
+import { useLocation, useParams, Outlet, useMatch } from 'react-router';
 import { useQuery } from 'react-query';
 import { getData } from '../api/api';
 
@@ -154,7 +154,6 @@ function Coin() {
 		data: priceData,
 		isSuccess: priceSuccess,
 	} = useQuery<PriceData>('coinPriceInfo', () => getData(`https://api.coinpaprika.com/v1/tickers/${coinId}`));
-	const navigate = useNavigate();
 	const loading = infoLoading || priceLoading;
 	const success = infoSuccess || priceSuccess;
 
@@ -164,15 +163,6 @@ function Coin() {
 				<title>{state?.name ? state.name : loading ? 'Loading...' : infoData?.name}</title>
 			</Helmet>
 			<Header>
-				<button
-					type="button"
-					onClick={() => {
-						navigate(-1);
-					}}
-				>
-					{' '}
-					뒤로가기{' '}
-				</button>
 				<Title> {state?.name ? state.name : loading ? 'Loading...' : infoData?.name}</Title>
 			</Header>
 			{loading ? (

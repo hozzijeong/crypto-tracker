@@ -1,6 +1,9 @@
 import { HelmetProvider } from 'react-helmet-async';
-import { createGlobalStyle } from 'styled-components';
+import { useRecoilValue } from 'recoil';
+import { createGlobalStyle, ThemeProvider } from 'styled-components';
+import { darkMode } from './recoil';
 import Router from './Router';
+import { darkTheme, lightTheme } from './theme';
 
 const GlobalStyle = createGlobalStyle`
 	@import url('https://fonts.googleapis.com/css2?family=Source+Sans+Pro:wght@300;400&display=swap');
@@ -65,13 +68,18 @@ const GlobalStyle = createGlobalStyle`
 `;
 
 function App() {
+	// eslint-disable-next-line @typescript-eslint/no-unused-vars
+	const darkmode = useRecoilValue(darkMode);
+	console.log(darkmode);
 	return (
-		<>
-			<GlobalStyle />
-			<HelmetProvider>
-				<Router />
-			</HelmetProvider>
-		</>
+		<ThemeProvider theme={darkmode ? darkTheme : lightTheme}>
+			<>
+				<GlobalStyle />
+				<HelmetProvider>
+					<Router />
+				</HelmetProvider>
+			</>
+		</ThemeProvider>
 	);
 }
 
