@@ -200,7 +200,7 @@ function Coin() {
 							<Link to={`/${coinId}/chart`}>Chart</Link>
 						</Tab>
 					</Tabs>
-					<Outlet />
+					<Outlet context={{ coinId }} />
 				</>
 			) : null}
 		</Container>
