@@ -1,5 +1,6 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
 import { useEffect, useState } from 'react';
+import { Helmet } from 'react-helmet-async';
 import { useQuery } from 'react-query';
 import { Link } from 'react-router-dom';
 import styled from 'styled-components';
@@ -71,6 +72,9 @@ function Coins() {
 
 	return (
 		<Container>
+			<Helmet>
+				<title>코인</title>
+			</Helmet>
 			<Header>
 				<Title>COINS</Title>
 			</Header>

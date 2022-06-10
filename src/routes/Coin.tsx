@@ -1,7 +1,7 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
 import styled from 'styled-components';
 import { Link } from 'react-router-dom';
-import { useEffect, useState } from 'react';
+import { Helmet } from 'react-helmet-async';
 import { useLocation, useParams, Outlet, useMatch } from 'react-router';
 import { useQuery } from 'react-query';
 import { getData } from '../api/api';
@@ -153,12 +153,18 @@ function Coin() {
 		isLoading: priceLoading,
 		data: priceData,
 		isSuccess: priceSuccess,
-	} = useQuery<PriceData>('coinInfo', () => getData(`https://api.coinpaprika.com/v1/tickers/${coinId}`));
+	} = useQuery<PriceData>('coinPriceInfo', () => getData(`https://api.coinpaprika.com/v1/tickers/${coinId}`));
 
 	const loading = infoLoading || priceLoading;
 	const success = infoSuccess || priceSuccess;
+
+	console.log(priceData, infoData);
+
 	return (
 		<Container>
+			<Helmet>
+				<title>{state?.name ? state.name : loading ? 'Loading...' : infoData?.name}</title>
+			</Helmet>
 			<Header>
 				<Title> {state?.name ? state.name : loading ? 'Loading...' : infoData?.name}</Title>
 			</Header>
@@ -176,8 +182,8 @@ function Coin() {
 							<span>${infoData?.symbol}</span>
 						</OverviewItem>
 						<OverviewItem>
-							<span>Open Source:</span>
-							<span>{infoData?.open_source ? 'Yes' : 'No'}</span>
+							<span>Price:</span>
+							<span>${priceData?.quotes.USD.price.toFixed(3)}</span>
 						</OverviewItem>
 					</Overview>
 					<Description>{infoData?.description}</Description>
@@ -193,11 +199,11 @@ function Coin() {
 					</Overview>
 
 					<Tabs>
-						<Tab isActive={priceMatch !== null}>
-							<Link to={`/${coinId}/price`}>Price</Link>
-						</Tab>
 						<Tab isActive={chartMatch !== null}>
 							<Link to={`/${coinId}/chart`}>Chart</Link>
+						</Tab>
+						<Tab isActive={priceMatch !== null}>
+							<Link to={`/${coinId}/price`}>Price</Link>
 						</Tab>
 					</Tabs>
 					<Outlet context={{ coinId }} />
