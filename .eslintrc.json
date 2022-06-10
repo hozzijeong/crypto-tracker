@@ -42,7 +42,8 @@
               "tsx": "never"
             }
          ],
-         "import/prefer-default-export": "off" // export default 옵션 차단
+         "import/prefer-default-export": "off", // export default 옵션 차단
+         "no-nested-ternary": "off" // 중첩된 삼항표현식 제한 끄기
     },
     "settings": {
         "import/resolver": {
